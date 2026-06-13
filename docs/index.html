@@ -533,7 +533,7 @@
     .concept-card {
       min-height: 190px;
       border-radius: 16px;
-      padding: 1rem;
+      padding: 1rem 1rem 2.35rem;
       background:
         linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015)),
         rgba(15, 23, 42, 0.76);
@@ -664,6 +664,13 @@
     ::-webkit-scrollbar-thumb:hover { background: #4a4a6a; }
 
     @media (max-width: 600px) {
+      header {
+        position: static;
+        width: calc(100% - 1rem);
+        border-radius: 22px;
+      }
+      .header-source { display: none; }
+      .hero { margin-top: 1rem; }
       .concepts-grid { grid-template-columns: 1fr 1fr; }
       .modal-body { padding: 1rem; }
       .modal-header { padding: 1rem; }
@@ -788,6 +795,20 @@ function updateMetadata() {
   if (sourceBadge && siteData?.source?.repository) sourceBadge.textContent = siteData.source.repository;
 }
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+  }[char]));
+}
+
+function escapeAttr(value) {
+  return escapeHtml(value).replace(/`/g, '&#96;');
+}
+
 // ============================================================
 // STATE
 // ============================================================
@@ -806,7 +827,6 @@ function saveState(state) {
 }
 
 let state = loadState();
-let quizContext = null; // { sectionId, quizIdx, selected, correct }
 
 // ============================================================
 // RENDER
@@ -817,8 +837,6 @@ function render() {
 
   SECTIONS.forEach((section, sIdx) => {
     const isUnlocked = state.unlockedSections.includes(section.id);
-    const isNextUnlockable = sIdx > 0 && isUnlocked;
-    const prevSection = sIdx > 0 ? SECTIONS[sIdx - 1] : null;
 
     if (sIdx > 0) {
       const conn = document.createElement('div');
@@ -838,8 +856,8 @@ function render() {
     tier.innerHTML = `
       <div class="tier-header" onclick="toggleTier(${section.id})">
         <div class="tier-number">${section.id}</div>
-        <div class="tier-icon" style="font-size:1.1rem; flex-shrink:0">${section.icon}</div>
-        <div class="tier-name">Section ${section.id} — ${section.title}</div>
+        <div class="tier-icon" style="font-size:1.1rem; flex-shrink:0">${escapeHtml(section.icon)}</div>
+        <div class="tier-name">Section ${section.id} — ${escapeHtml(section.title)}</div>
         <div class="tier-badge">${isUnlocked ? `${viewedInSection}/${totalInSection} viewed` : '🔒 Locked'}</div>
         <div class="tier-chevron">▼</div>
       </div>
@@ -858,14 +876,15 @@ function render() {
 
 function renderConceptCard(concept, isUnlocked) {
   const viewed = state.viewedConcepts[concept.id];
+  const conceptId = escapeAttr(concept.id);
   return `
     <div class="concept-card ${viewed ? 'viewed' : ''}"
-         onclick="${isUnlocked ? `openConcept('${concept.id}')` : 'void(0)'}"
-         title="${isUnlocked ? concept.title : 'Unlock this section to view'}">
+         onclick="${isUnlocked ? `openConcept('${conceptId}')` : 'void(0)'}"
+         title="${isUnlocked ? escapeAttr(concept.title) : 'Unlock this section to view'}">
       <div class="card-viewed-dot"></div>
-      <div class="card-icon">${concept.icon}</div>
-      <div class="card-title">${concept.title}</div>
-      <div class="card-desc">${concept.desc}</div>
+      <div class="card-icon">${escapeHtml(concept.icon)}</div>
+      <div class="card-title">${escapeHtml(concept.title)}</div>
+      <div class="card-desc">${escapeHtml(concept.desc)}</div>
       <div class="card-order">Topo #${concept.topologicalIndex}</div>
     </div>`;
 }
@@ -875,7 +894,6 @@ function renderGateway(section, isUnlocked) {
   if (!nextSection) return '';
 
   if (!isUnlocked) {
-    const prevSection = SECTIONS.find(s => s.id === section.id - 1);
     return `
       <div class="tier-gateway">
         <div class="lock-icon">🔒</div>
@@ -956,12 +974,12 @@ function openConcept(conceptId) {
   // Aliases / tags
   const tagsEl = document.getElementById('cm-tags');
   tagsEl.innerHTML = concept.aliases.length
-    ? concept.aliases.map(a => `<span class="modal-tag">${a}</span>`).join('')
+    ? concept.aliases.map(a => `<span class="modal-tag">${escapeHtml(a)}</span>`).join('')
     : '';
 
   // Source link
   document.getElementById('cm-source').innerHTML =
-    `<a href="${concept.sourceUrl}" target="_blank" rel="noopener">
+    `<a href="${escapeAttr(concept.sourceUrl)}" target="_blank" rel="noopener">
       View source on GitHub →
     </a>`;
 
@@ -1022,12 +1040,12 @@ function renderQuizQuestion() {
 
   body.innerHTML = `
     <div class="quiz-progress">Question ${currentQ + 1} of ${questions.length}</div>
-    <div class="quiz-question">${q.question}</div>
+    <div class="quiz-question">${escapeHtml(q.question)}</div>
     <div class="quiz-options" id="quiz-options">
       ${q.options.map((opt, i) => `
         <label class="quiz-option" id="opt-${i}">
           <input type="radio" name="quiz-q" value="${i}" onchange="selectOption(${i})" />
-          ${opt}
+          ${escapeHtml(opt)}
         </label>`).join('')}
     </div>
     <div class="quiz-feedback" id="quiz-feedback"></div>
