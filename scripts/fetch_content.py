@@ -340,7 +340,7 @@ def parse_frontmatter(content: str) -> tuple[dict[str, str], str]:
 
 
 def markdown_to_plain_text(text: str) -> str:
-    """Strip the simple Markdown patterns used in upstream dictionary entries."""
+    """Strip simple upstream Markdown; not a general-purpose Markdown parser."""
     text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     text = re.sub(r"`([^`]+)`", r"\1", text)
     text = re.sub(r"\[([^\]]+)\]\([^\)]+\)", r"\1", text)

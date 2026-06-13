@@ -769,6 +769,8 @@ const HTML_ENTITIES = {
   '>': '&gt;',
   '"': '&quot;',
   "'": '&#39;',
+  '`': '&#96;',
+  '/': '&#47;',
 };
 
 async function loadSiteData() {
@@ -804,11 +806,11 @@ function updateMetadata() {
 }
 
 function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => HTML_ENTITIES[char]);
+  return String(value ?? '').replace(/[&<>"'`/]/g, char => HTML_ENTITIES[char]);
 }
 
 function escapeAttr(value) {
-  return escapeHtml(value).replace(/`/g, '&#96;');
+  return escapeHtml(value);
 }
 
 // ============================================================
