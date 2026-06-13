@@ -885,7 +885,7 @@ function renderConceptCard(concept, isUnlocked) {
       <div class="card-icon">${escapeHtml(concept.icon)}</div>
       <div class="card-title">${escapeHtml(concept.title)}</div>
       <div class="card-desc">${escapeHtml(concept.desc)}</div>
-      <div class="card-order">Topo #${concept.topologicalIndex}</div>
+      <div class="card-order">Position #${concept.topologicalIndex}</div>
     </div>`;
 }
 
@@ -1004,7 +1004,9 @@ function startQuiz(sectionId) {
 
   quizState = {
     sectionId,
-    questions: section.quiz.map(shuffleQuizQuestion),
+    questions: section.quiz.map((question, index) =>
+      shuffleQuizQuestion(question, `${section.id}:${section.quizVersion}:${index}`)
+    ),
     currentQ: 0,
     answers: [],
     score: 0
@@ -1019,10 +1021,27 @@ function startQuiz(sectionId) {
   document.getElementById('quiz-modal').classList.add('open');
 }
 
-function shuffleQuizQuestion(question) {
+function seededRandom(seed) {
+  let hash = 2166136261;
+  for (let i = 0; i < seed.length; i++) {
+    hash ^= seed.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return () => {
+    hash += hash << 13;
+    hash ^= hash >>> 7;
+    hash += hash << 3;
+    hash ^= hash >>> 17;
+    hash += hash << 5;
+    return ((hash >>> 0) % 1000000) / 1000000;
+  };
+}
+
+function shuffleQuizQuestion(question, seed) {
+  const random = seededRandom(seed);
   const options = question.options.map((text, index) => ({ text, index }));
   for (let i = options.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(random() * (i + 1));
     [options[i], options[j]] = [options[j], options[i]];
   }
   return {

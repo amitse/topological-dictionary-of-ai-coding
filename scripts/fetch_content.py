@@ -30,6 +30,8 @@ REPO_API = f"https://api.github.com/repos/{SOURCE_REPO}"
 RAW_BASE = f"https://raw.githubusercontent.com/{SOURCE_REPO}/main"
 CURRICULUM_URL = f"{RAW_BASE}/internal/Curriculum.md"
 DATA_JSON = Path(__file__).parent.parent / "docs" / "data.json"
+MAX_DESC_LENGTH = 520
+MAX_BODY_LENGTH = 2400
 
 SECTION_ICONS = {
     "The Model": "🧠",
@@ -363,8 +365,8 @@ def first_paragraph(text: str) -> str:
     full = markdown_to_plain_text(" ".join(para_lines))
     sentences = re.split(r"(?<=[.!?]) +", full)
     desc = " ".join(sentences[:3])
-    if len(desc) > 520:
-        desc = desc[:517] + "..."
+    if len(desc) > MAX_DESC_LENGTH:
+        desc = desc[:MAX_DESC_LENGTH - 3] + "..."
     return desc
 
 
@@ -372,7 +374,7 @@ def full_body(text: str) -> str:
     """Return shallow-but-useful full concept body for detail views."""
     lines = [line.strip() for line in text.splitlines() if line.strip() and not line.strip().startswith("#")]
     body = markdown_to_plain_text("\n\n".join(lines))
-    return body[:2400] + ("..." if len(body) > 2400 else "")
+    return body[:MAX_BODY_LENGTH] + ("..." if len(body) > MAX_BODY_LENGTH else "")
 
 
 def parse_aliases(raw: str) -> list[str]:
@@ -386,6 +388,7 @@ def parse_aliases(raw: str) -> list[str]:
 def parse_curriculum(markdown: str) -> list[dict[str, Any]]:
     sections: list[dict[str, Any]] = []
     current: dict[str, Any] | None = None
+    # Match either an em dash (upstream style) or hyphen-minus in copied markdown.
     heading_re = re.compile(r"^##\s+Section\s+(\d+)\s+[—-]\s+(.+)$")
 
     for line in markdown.splitlines():
