@@ -449,7 +449,7 @@
 
 <script>
 // ============================================================
-// DATA — auto-updated by .github/workflows/sync.yml
+// DATA — auto-updated by scripts/fetch_content.py (run via .github/workflows/sync.yml)
 // ============================================================
 const SECTIONS = [
   {
@@ -842,7 +842,7 @@ function openConcept(conceptId) {
     : '';
 
   // Source link
-  const slug = concept.title.replace(/ /g, '%20');
+  const slug = encodeURIComponent(concept.title);
   document.getElementById('cm-source').innerHTML =
     `<a href="https://github.com/mattpocock/dictionary-of-ai-coding/blob/main/dictionary/${slug}.md" target="_blank" rel="noopener">
       View source on GitHub →
@@ -959,7 +959,7 @@ function nextQuestion() {
 
 function finishQuiz() {
   const { sectionId, score, questions } = quizState;
-  const passed = score >= Math.ceil(questions.length / 2); // pass if ≥ 50%
+  const passed = score / questions.length >= 0.5; // pass if ≥ 50%
   const body = document.getElementById('quiz-body');
   const footer = document.getElementById('quiz-footer');
 

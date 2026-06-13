@@ -196,10 +196,14 @@ def fetch_concepts() -> dict:
         if item.get("type") != "file" or not item["name"].endswith(".md"):
             continue
         title = item["name"][:-3]  # strip .md
-        raw_url = item.get("download_url") or f"{RAW_BASE}/dictionary/{urllib.request.quote(item['name'])}"
+        raw_url = item.get("download_url")
+        if not raw_url:
+            raw_url = f"{RAW_BASE}/dictionary/{urllib.request.quote(item['name'])}"
+            print(f"  ℹ Using fallback URL for {item['name']}", file=sys.stderr)
         try:
             content = make_request(raw_url)
-            assert isinstance(content, str)
+            if not isinstance(content, str):
+                raise ValueError(f"Expected str response, got {type(content).__name__}")
         except Exception as exc:
             print(f"  ⚠ Could not fetch {item['name']}: {exc}", file=sys.stderr)
             continue
