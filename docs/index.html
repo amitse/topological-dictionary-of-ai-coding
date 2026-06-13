@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Coding Tech Tree</title>
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --bg2: #0f0f1a;
+      --bg3: #161625;
+      --border: #2a2a45;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #6366f1;
+      --accent-glow: rgba(99,102,241,0.3);
+      --green: #22c55e;
+      --green-glow: rgba(34,197,94,0.25);
+      --gold: #f59e0b;
+      --red: #ef4444;
+      --locked: #1e1e2e;
+      --locked-border: #2d2d42;
+      --locked-text: #4a4a6a;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(10,10,18,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .header-title {
+      font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, #6366f1, #a855f7, #06b6d4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; white-space: nowrap;
+    }
+    .header-source {
+      font-size: 0.75rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .header-source a { color: var(--accent); text-decoration: none; }
+    .header-source a:hover { text-decoration: underline; }
+    .progress-wrap { flex: 1; min-width: 180px; }
+    .progress-label {
+      font-size: 0.7rem; color: var(--text-muted);
+      display: flex; justify-content: space-between; margin-bottom: 0.25rem;
+    }
+    .progress-bar {
+      height: 6px; background: var(--border); border-radius: 99px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: linear-gradient(90deg, #6366f1, #22c55e);
+      border-radius: 99px; transition: width 0.5s ease;
+    }
+    .btn-reset {
+      font-size: 0.7rem; padding: 0.3rem 0.75rem;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--text-muted); border-radius: 6px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+    /* HERO */
+    .hero {
+      text-align: center; padding: 3rem 1.5rem 2rem;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(99,102,241,0.12), transparent);
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #e2e8f0 0%, #6366f1 50%, #06b6d4 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      margin-bottom: 0.75rem;
+    }
+    .hero p {
+      color: var(--text-muted); max-width: 550px; margin: 0 auto;
+      font-size: 1rem;
+    }
+    .hero-badges {
+      display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem;
+    }
+    .badge {
+      font-size: 0.7rem; padding: 0.25rem 0.65rem; border-radius: 99px;
+      background: var(--bg3); border: 1px solid var(--border); color: var(--text-muted);
+    }
+
+    /* TECH TREE */
+    .tech-tree {
+      max-width: 1100px; margin: 0 auto; padding: 1rem 1rem 4rem;
+    }
+
+    /* SECTION TIER */
+    .tier { margin-bottom: 0.5rem; }
+    .tier-header {
+      display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem;
+      background: var(--bg3); border: 1px solid var(--border); border-radius: 12px 12px 0 0;
+      cursor: pointer; user-select: none; transition: background 0.2s;
+    }
+    .tier-header:hover { background: #1a1a28; }
+    .tier-number {
+      width: 28px; height: 28px; border-radius: 50%; border: 2px solid;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
+    }
+    .tier.unlocked .tier-number { border-color: var(--accent); color: var(--accent); }
+    .tier.locked .tier-number { border-color: var(--locked-border); color: var(--locked-text); }
+    .tier.completed .tier-number {
+      background: var(--green); border-color: var(--green); color: #000;
+    }
+    .tier-name {
+      flex: 1; font-weight: 600; font-size: 0.95rem;
+    }
+    .tier.locked .tier-name { color: var(--locked-text); }
+    .tier-badge {
+      font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 99px; font-weight: 600;
+    }
+    .tier.unlocked .tier-badge { background: rgba(99,102,241,0.15); color: var(--accent); border: 1px solid var(--accent); }
+    .tier.locked .tier-badge { background: var(--locked); color: var(--locked-text); border: 1px solid var(--locked-border); }
+    .tier.completed .tier-badge { background: rgba(34,197,94,0.15); color: var(--green); border: 1px solid var(--green); }
+    .tier-chevron {
+      color: var(--text-muted); font-size: 0.8rem;
+      transition: transform 0.3s;
+    }
+    .tier.collapsed .tier-chevron { transform: rotate(-90deg); }
+
+    .tier-body {
+      border: 1px solid var(--border); border-top: none;
+      border-radius: 0 0 12px 12px; overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .tier.collapsed .tier-body { display: none; }
+    .tier.locked .tier-body { background: var(--locked); }
+
+    .concepts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 0.75rem; padding: 1rem;
+    }
+
+    /* CONCEPT CARD */
+    .concept-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.9rem;
+      cursor: pointer; transition: all 0.2s;
+      position: relative;
+    }
+    .concept-card:hover {
+      border-color: var(--accent); transform: translateY(-2px);
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .tier.locked .concept-card {
+      background: var(--locked); border-color: var(--locked-border);
+      cursor: not-allowed; opacity: 0.6;
+    }
+    .tier.locked .concept-card:hover {
+      transform: none; box-shadow: none; border-color: var(--locked-border);
+    }
+    .concept-card.viewed {
+      border-color: rgba(99,102,241,0.5);
+    }
+    .concept-card .card-icon {
+      font-size: 1.2rem; margin-bottom: 0.35rem;
+    }
+    .concept-card .card-title {
+      font-size: 0.85rem; font-weight: 600; margin-bottom: 0.3rem; color: var(--text);
+    }
+    .tier.locked .concept-card .card-title { color: var(--locked-text); }
+    .concept-card .card-desc {
+      font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .tier.locked .concept-card .card-desc { color: var(--locked-text); }
+    .concept-card .card-viewed-dot {
+      position: absolute; top: 0.6rem; right: 0.6rem;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green); display: none;
+    }
+    .concept-card.viewed .card-viewed-dot { display: block; }
+
+    /* SECTION GATEWAY (QUIZ UNLOCK) */
+    .tier-gateway {
+      padding: 1rem; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+    }
+    .tier.locked .tier-gateway {
+      border-top: 1px solid var(--locked-border);
+      flex-direction: column;
+    }
+    .lock-icon { font-size: 1.5rem; }
+    .lock-text { font-size: 0.8rem; color: var(--locked-text); }
+    .btn-quiz {
+      font-size: 0.82rem; font-weight: 600;
+      padding: 0.55rem 1.25rem; border-radius: 8px;
+      border: none; cursor: pointer; transition: all 0.2s;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+    }
+    .btn-quiz:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+    }
+    .btn-quiz:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    /* TIER CONNECTOR */
+    .tier-connector {
+      display: flex; align-items: center; justify-content: center;
+      height: 32px; position: relative;
+    }
+    .tier-connector::before {
+      content: '';
+      width: 2px; height: 100%;
+      background: linear-gradient(180deg, var(--border), transparent);
+    }
+    .tier-connector-arrow {
+      position: absolute; color: var(--text-muted); font-size: 0.75rem;
+    }
+
+    /* MODALS */
+    .modal-overlay {
+      display: none; position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.75); backdrop-filter: blur(4px);
+      align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: 16px; width: 100%; max-width: 560px;
+      max-height: 90vh; overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      animation: slideUp 0.25s ease;
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .modal-header {
+      padding: 1.25rem 1.5rem 1rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: flex-start; gap: 0.75rem;
+    }
+    .modal-header-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .modal-header-text h2 { font-size: 1.1rem; font-weight: 700; }
+    .modal-header-text .modal-section-label {
+      font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem;
+    }
+    .modal-close {
+      margin-left: auto; background: none; border: none;
+      color: var(--text-muted); cursor: pointer; font-size: 1.2rem;
+      padding: 0.25rem; flex-shrink: 0;
+      transition: color 0.2s; line-height: 1;
+    }
+    .modal-close:hover { color: var(--text); }
+    .modal-body { padding: 1.25rem 1.5rem; }
+    .modal-desc { font-size: 0.9rem; line-height: 1.7; color: var(--text-muted); }
+    .modal-desc a { color: var(--accent); }
+    .modal-tags {
+      display: flex; gap: 0.4rem; flex-wrap: wrap; margin-top: 1rem;
+    }
+    .modal-tag {
+      font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 99px;
+      background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.25); color: var(--accent);
+      cursor: pointer;
+    }
+    .modal-tag:hover { background: rgba(99,102,241,0.2); }
+    .modal-source-link {
+      margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+    }
+    .modal-source-link a { color: var(--accent); }
+
+    /* QUIZ MODAL */
+    .quiz-progress {
+      font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1rem;
+    }
+    .quiz-question {
+      font-size: 1rem; font-weight: 600; margin-bottom: 1.25rem; color: var(--text);
+      line-height: 1.5;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .quiz-option {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding: 0.75rem 1rem; border-radius: 8px;
+      border: 1px solid var(--border); cursor: pointer;
+      transition: all 0.15s; background: var(--bg2);
+      font-size: 0.875rem; color: var(--text);
+    }
+    .quiz-option:hover { border-color: var(--accent); background: rgba(99,102,241,0.08); }
+    .quiz-option input[type="radio"] { accent-color: var(--accent); flex-shrink: 0; }
+    .quiz-option.correct { border-color: var(--green); background: rgba(34,197,94,0.1); color: var(--green); }
+    .quiz-option.wrong { border-color: var(--red); background: rgba(239,68,68,0.1); color: var(--red); }
+    .quiz-option.disabled { cursor: not-allowed; pointer-events: none; }
+    .quiz-feedback {
+      padding: 0.75rem 1rem; border-radius: 8px; margin-top: 0.75rem;
+      font-size: 0.85rem; font-weight: 500; display: none;
+    }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct { background: rgba(34,197,94,0.1); color: var(--green); border: 1px solid var(--green); }
+    .quiz-feedback.wrong { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid var(--red); }
+    .quiz-footer {
+      padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+      display: flex; gap: 0.75rem; align-items: center; justify-content: flex-end;
+    }
+    .btn-primary {
+      padding: 0.6rem 1.4rem; border-radius: 8px; border: none;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white;
+      font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,102,241,0.4); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .btn-secondary {
+      padding: 0.6rem 1.4rem; border-radius: 8px;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--text-muted); font-size: 0.875rem; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--text-muted); color: var(--text); }
+
+    /* QUIZ RESULT */
+    .quiz-result {
+      text-align: center; padding: 2rem 1.5rem;
+    }
+    .quiz-result-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .quiz-result h3 { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .quiz-result p { font-size: 0.9rem; color: var(--text-muted); }
+    .quiz-result .score {
+      font-size: 2rem; font-weight: 800; margin: 1rem 0;
+    }
+    .score.pass { color: var(--green); }
+    .score.fail { color: var(--red); }
+
+    /* UNLOCK ANIMATION */
+    @keyframes unlockPulse {
+      0% { box-shadow: 0 0 0 0 var(--green-glow); }
+      70% { box-shadow: 0 0 0 20px transparent; }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+    .tier.just-unlocked .tier-header { animation: unlockPulse 0.8s ease; }
+
+    /* FOOTER */
+    footer {
+      text-align: center; padding: 2rem; border-top: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.75rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4a4a6a; }
+
+    @media (max-width: 600px) {
+      .concepts-grid { grid-template-columns: 1fr 1fr; }
+      .modal-body { padding: 1rem; }
+      .modal-header { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-title">🗺️ AI Coding Tech Tree</div>
+  <div class="header-source">
+    Source:
+    <a href="https://github.com/mattpocock/dictionary-of-ai-coding" target="_blank" rel="noopener">
+      mattpocock/dictionary-of-ai-coding
+    </a>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Progress</span>
+      <span id="progress-text">0 / 7 sections</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+  </div>
+  <button class="btn-reset" onclick="resetProgress()">Reset</button>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>AI Coding Tech Tree</h1>
+  <p>Master the vocabulary of AI coding — from foundational model concepts to advanced working patterns. Unlock each section by passing a short quiz.</p>
+  <div class="hero-badges">
+    <span class="badge">68 concepts</span>
+    <span class="badge">7 sections</span>
+    <span class="badge">Topologically sorted</span>
+    <span class="badge">Quiz to unlock</span>
+    <span class="badge">Progress saved locally</span>
+  </div>
+</div>
+
+<!-- TECH TREE -->
+<div class="tech-tree" id="tech-tree"></div>
+
+<!-- CONCEPT DETAIL MODAL -->
+<div class="modal-overlay" id="concept-modal" onclick="closeConceptModal(event)">
+  <div class="modal-box" id="concept-modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon" id="cm-icon"></div>
+      <div class="modal-header-text">
+        <h2 id="cm-title"></h2>
+        <div class="modal-section-label" id="cm-section"></div>
+      </div>
+      <button class="modal-close" onclick="closeConceptModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-desc" id="cm-desc"></div>
+      <div class="modal-tags" id="cm-tags"></div>
+      <div class="modal-source-link" id="cm-source"></div>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ MODAL -->
+<div class="modal-overlay" id="quiz-modal" onclick="closeQuizModal(event)">
+  <div class="modal-box" id="quiz-modal-box">
+    <div class="modal-header">
+      <div class="modal-header-icon">🔓</div>
+      <div class="modal-header-text">
+        <h2 id="qm-title">Unlock Next Section</h2>
+        <div class="modal-section-label" id="qm-subtitle"></div>
+      </div>
+      <button class="modal-close" onclick="closeQuizModal()">✕</button>
+    </div>
+    <div class="modal-body" id="quiz-body"></div>
+    <div class="quiz-footer" id="quiz-footer"></div>
+  </div>
+</div>
+
+<footer>
+  Content sourced from
+  <a href="https://github.com/mattpocock/dictionary-of-ai-coding" target="_blank" rel="noopener">mattpocock/dictionary-of-ai-coding</a>
+  · Website auto-synced weekly via GitHub Actions
+  · Progress stored in your browser's localStorage
+</footer>
+
+<script>
+// ============================================================
+// DATA — auto-updated by .github/workflows/sync.yml
+// ============================================================
+const SECTIONS = [
+  {
+    id: 1,
+    title: "The Model",
+    icon: "🧠",
+    concepts: [
+      { id: "ai", title: "AI", icon: "🤖", desc: "A moving label, not a technology. \"AI\" doesn't name a fixed thing — it points at whatever computers can newly, impressively do. Right now it points at large language models.", aliases: ["artificial intelligence"] },
+      { id: "model", title: "Model", icon: "⚙️", desc: "The parameters. Stateless — does next-token prediction and nothing else. \"Claude Opus\" and \"GPT-5\" are models. On its own a model can't do anything agentic; it has to be harnessed.", aliases: ["LLM", "language model"] },
+      { id: "parameters", title: "Parameters", icon: "🔢", desc: "The numbers inside a model — often billions of them — tuned during training. Everything the model \"knows\" lives in them. Training sets them; inference uses them unchanged. Also called weights.", aliases: ["weights"] },
+      { id: "training", title: "Training", icon: "🏋️", desc: "The process that sets a model's parameters by exposing it to vast amounts of text and adjusting parameters to improve next-token prediction. A one-time, expensive process done by the model provider.", aliases: [] },
+      { id: "inference", title: "Inference", icon: "⚡", desc: "Running a trained model to generate output — what happens on every model provider request. Parameters stay fixed; the model just does next-token prediction over the context it's given.", aliases: [] },
+      { id: "token", title: "Token", icon: "🔤", desc: "The atomic unit a model reads and writes. Roughly word-sized but not exactly — common words are one token, rare or long ones split into several. Roughly 750 words ≈ 1,000 tokens.", aliases: [] },
+      { id: "next-token-prediction", title: "Next-token prediction", icon: "🎯", desc: "What the model actually does. Given a context, it samples one next token, appends it, and runs again — until it produces a stop token. The entire output of every model is a sequence of these single steps.", aliases: [] },
+      { id: "non-determinism", title: "Non-determinism", icon: "🎲", desc: "The same input can produce different output. Run a model twice with identical context and you may get two different answers — sometimes a word, sometimes a completely different approach.", aliases: [] },
+      { id: "model-provider", title: "Model provider", icon: "☁️", desc: "Whatever serves a model for inference. Usually a remote service (Anthropic, OpenAI, Google), but can also be local — Ollama, LM Studio, llama.cpp running on your own machine.", aliases: [] },
+      { id: "harness", title: "Harness", icon: "🔧", desc: "Everything around the model that turns it into an agent: tools, system prompt, context-window management, permissions, hooks. Claude.ai and Claude Code run on the same model but behave differently because they have different harnesses.", aliases: [] },
+      { id: "model-provider-request", title: "Model provider request", icon: "📡", desc: "One round-trip from the harness to the model provider. The harness sends the current context; the provider returns one response (a tool call or a final answer).", aliases: [] },
+      { id: "input-tokens", title: "Input tokens", icon: "📥", desc: "Tokens the harness sends on each model provider request — the system prompt, the conversation history, tool results, everything the model reads before it writes. Billed at a lower rate than output tokens.", aliases: [] },
+      { id: "output-tokens", title: "Output tokens", icon: "📤", desc: "Tokens the model generates back. Billed at a higher rate than input tokens — commonly around five times the rate — since they cost more compute to produce.", aliases: [] },
+      { id: "prefix-cache", title: "Prefix cache", icon: "💾", desc: "The provider-side store that lets consecutive model provider requests skip re-processing a shared prefix. When the start of a request matches a recent one, the provider reuses the computation.", aliases: [] },
+      { id: "cache-tokens", title: "Cache tokens", icon: "🏪", desc: "Input tokens the provider has cached from a previous request so it doesn't have to re-process them. Usually billed at a steep discount — often 10–20% of the standard input-token price.", aliases: [] }
+    ],
+    quiz: [
+      {
+        question: "What is the atomic unit a language model reads and writes?",
+        options: ["Token", "Pixel", "Byte", "Word"],
+        answer: 0,
+        explanation: "A token is the atomic unit — roughly word-sized but not exactly. Common words are one token; rare or long words split into several."
+      },
+      {
+        question: "What wraps a model with tools, system prompt, and context management to make it an agent?",
+        options: ["Harness", "Session", "Sandbox", "Training"],
+        answer: 0,
+        explanation: "The harness is everything around the model that turns it into an agent — tools, system prompt, context-window management, permissions."
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: "Sessions, Context Windows & Turns",
+    icon: "💬",
+    concepts: [
+      { id: "stateless", title: "Stateless", icon: "🧹", desc: "Carries no information forward. The model is stateless across model provider requests — each request resends the full context window, because the model has no way to see anything else.", aliases: [] },
+      { id: "context", title: "Context", icon: "📖", desc: "The relevant information the agent has access to right now. Not the raw input the model sees (that's the context window) — what the agent actually has available to reason about.", aliases: [] },
+      { id: "context-window", title: "Context window", icon: "🪟", desc: "Everything the model sees on each model provider request. Finite, model-specific, and the only surface through which the model perceives anything. Once full, something must give.", aliases: [] },
+      { id: "stateful", title: "Stateful", icon: "🗃️", desc: "Carries information forward. A session is stateful across turns — context accumulates as the session runs, which is why long sessions drift into a \"dumb zone\" of attention degradation.", aliases: [] },
+      { id: "agent", title: "Agent", icon: "🤝", desc: "A model harnessed with tools, a system prompt, and a context window, that takes turns with a user. Claude Code is an agent; the raw model API is not.", aliases: [] },
+      { id: "system-prompt", title: "System prompt", icon: "📋", desc: "The instructions the harness prepends to every model provider request — the agent's standing brief: who it is, how to behave, which tools it can call, what conventions to follow.", aliases: [] },
+      { id: "session", title: "Session", icon: "⏱️", desc: "One bounded run of interaction with an agent. Starts empty, accumulates messages, tool results, and files read, and ends when cleared, closed, or compacted into a fresh session.", aliases: [] },
+      { id: "turn", title: "Turn", icon: "🔄", desc: "One user message plus everything the agent does in response, up until it yields back to the user. Contains one or more model provider requests — many, if the agent calls tools.", aliases: [] }
+    ],
+    quiz: [
+      {
+        question: "What is the finite space the model sees on every single request?",
+        options: ["Context window", "System prompt", "Session history", "Memory system"],
+        answer: 0,
+        explanation: "The context window is everything the model sees on each request — it's finite and model-specific, the only surface through which the model perceives anything."
+      },
+      {
+        question: "What is a model harnessed with tools and a system prompt called?",
+        options: ["Agent", "Harness", "Session", "Turn"],
+        answer: 0,
+        explanation: "An agent is a model harnessed with tools, a system prompt, and a context window, that takes turns with a user."
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: "Tools & Environment",
+    icon: "🛠️",
+    concepts: [
+      { id: "environment", title: "Environment", icon: "🌍", desc: "The world the agent acts on — anything outside the harness that the agent perceives through tool results and changes through tool calls. The harness runs the agent; the environment is what the agent works in.", aliases: [] },
+      { id: "filesystem", title: "Filesystem", icon: "📁", desc: "A tree of files and directories the agent reads from, writes to, and executes within — the default kind of environment for a coding agent. AGENTS.md, skills, source code all live here.", aliases: [] },
+      { id: "tool", title: "Tool", icon: "🔨", desc: "A function the harness exposes for the agent to call — Read, Write, Bash, Search. Tools are how an agent perceives and acts on the environment; it can't see or do anything without them.", aliases: [] },
+      { id: "tool-call", title: "Tool call", icon: "📞", desc: "The model's output naming a tool and its arguments — just structured text. It doesn't do anything on its own; the harness has to read it and execute it.", aliases: [] },
+      { id: "tool-result", title: "Tool result", icon: "📬", desc: "What the harness sends back after executing a tool call — the file contents, the command output, the error. The agent's only view of the environment.", aliases: [] },
+      { id: "mcp", title: "MCP", icon: "🔌", desc: "Model Context Protocol. A protocol for plugging external tool servers into a harness — how an agent gets tools beyond what the harness ships with. The agent calls a tool; MCP handles the rest.", aliases: ["Model Context Protocol"] },
+      { id: "permission-request", title: "Permission request", icon: "🙋", desc: "What the harness shows the user before executing a tool call that isn't pre-approved. The model produces a tool call; instead of running it immediately, the harness pauses and asks.", aliases: [] },
+      { id: "permission-mode", title: "Permission mode", icon: "🔐", desc: "The permission-gating slice of an agent mode — which tool calls trigger a permission request and which run automatically.", aliases: [] },
+      { id: "agent-mode", title: "Agent mode", icon: "🎚️", desc: "A preset that shapes how the agent operates at runtime — bundles a permission mode with behavioral instructions injected into the system prompt.", aliases: [] },
+      { id: "sandbox", title: "Sandbox", icon: "📦", desc: "An isolated environment the agent runs inside — a container, VM, ephemeral filesystem, or restricted-permission shell. Limits the blast radius of agent actions.", aliases: [] }
+    ],
+    quiz: [
+      {
+        question: "What is a tool call in AI agent systems?",
+        options: [
+          "The model's output naming a tool and its arguments",
+          "A harness function that runs shell commands",
+          "A user request to execute external code",
+          "An API call to a remote service endpoint"
+        ],
+        answer: 0,
+        explanation: "A tool call is the model's output naming a tool and its arguments — just structured text. The harness has to read it and execute it."
+      },
+      {
+        question: "What protocol allows external servers to plug tools into a harness?",
+        options: [
+          "MCP — Model Context Protocol",
+          "API — Application Program Interface",
+          "CLI — Command Line Interface",
+          "SDK — Software Development Kit"
+        ],
+        answer: 0,
+        explanation: "MCP (Model Context Protocol) is the protocol for plugging external tool servers into a harness."
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: "Failure Modes",
+    icon: "⚠️",
+    concepts: [
+      { id: "sycophancy", title: "Sycophancy", icon: "🪞", desc: "Confidently agreeable model output. Caused by training: the model was shaped to favor answers humans liked, and humans tend to like agreement more than correction.", aliases: [] },
+      { id: "hallucination", title: "Hallucination", icon: "👻", desc: "Confidently-wrong model output. Two flavors: parametric confabulation (the model makes up facts from training gaps) and faithfulness hallucination (the model ignores context it was given).", aliases: [] },
+      { id: "parametric-knowledge", title: "Parametric knowledge", icon: "📚", desc: "What the model \"knows\" from training, stored in its parameters. Frozen at training time — the model can't see its own parameters or update them. Contrasts with contextual knowledge.", aliases: [] },
+      { id: "knowledge-cutoff", title: "Knowledge cutoff", icon: "📅", desc: "The date past which a model has no parametric knowledge. Libraries, APIs, and events from after the cutoff are fabrication traps unless their docs are loaded as contextual knowledge.", aliases: [] },
+      { id: "contextual-knowledge", title: "Contextual knowledge", icon: "🔍", desc: "Facts the agent can read directly from the context right now — the user's task, files the agent has read in, tool results, AGENTS.md content. Counterpart to parametric knowledge.", aliases: [] },
+      { id: "attention-relationship", title: "Attention relationship", icon: "🕸️", desc: "When predicting each token, the model factors in every other token in the context. The pairing between two tokens is an attention relationship — meaningful relationships carry strong signals.", aliases: [] },
+      { id: "attention-budget", title: "Attention budget", icon: "💰", desc: "Each token has a finite amount of influence to distribute across the rest of the context. Heavy influence on one relationship leaves less for others.", aliases: [] },
+      { id: "attention-degradation", title: "Attention degradation", icon: "📉", desc: "As a session grows, each token's attention budget is spread across more competitors. The signal on any one meaningful relationship shrinks; noise from irrelevant context crowds in.", aliases: [] },
+      { id: "smart-zone", title: "Smart zone", icon: "🎯", desc: "Early in a session the agent is in a \"smart zone\" — sharp, focused, recall is good. As the session grows it drifts into a \"dumb zone\": sloppier, forgetful, more mistakes.", aliases: ["dumb zone"] }
+    ],
+    quiz: [
+      {
+        question: "What is the term for confidently wrong model output?",
+        options: ["Hallucination", "Sycophancy", "Degradation", "Compaction"],
+        answer: 0,
+        explanation: "Hallucination is confidently-wrong model output — either made-up facts (parametric confabulation) or ignoring given context (faithfulness hallucination)."
+      },
+      {
+        question: "As a session grows longer, the signal from meaningful attention relationships tends to what?",
+        options: [
+          "Shrink as budget spreads over more tokens",
+          "Grow stronger with more context available",
+          "Stay perfectly consistent throughout the run",
+          "Reset automatically after every tool call"
+        ],
+        answer: 0,
+        explanation: "Attention degradation: as the session grows, each token's attention budget spreads across more competitors, weakening the signal on any one meaningful relationship."
+      }
+    ]
+  },
+  {
+    id: 5,
+    title: "Handoffs",
+    icon: "🤲",
+    concepts: [
+      { id: "clearing", title: "Clearing", icon: "🧽", desc: "Ending the current session and starting a fresh one. The next message begins with an empty session and an empty context window — the primary defense against attention degradation.", aliases: [] },
+      { id: "handoff", title: "Handoff", icon: "🏃", desc: "Transferring agent context from one session to another. The carry mechanism varies — a written handoff artifact, an in-memory summary (compaction), and others.", aliases: [] },
+      { id: "primary-source", title: "Primary source", icon: "📜", desc: "A source of truth in its original form — the code, the conversation transcript, the raw log, the actual API response. Not an account of the thing; the thing itself.", aliases: [] },
+      { id: "secondary-source", title: "Secondary source", icon: "📝", desc: "An account of a primary source, one step removed — documentation describing code, a summary describing a transcript. Cheaper to load into context, but lossy.", aliases: [] },
+      { id: "handoff-artifact", title: "Handoff artifact", icon: "📄", desc: "A document used as the carry mechanism for a handoff — written to the environment by one session to be read by another. Specs, tickets, and plan docs are all handoff artifacts.", aliases: [] },
+      { id: "spec", title: "Spec", icon: "📐", desc: "A handoff artifact describing a multi-session piece of work — what's being built, not how each session does its share. Mutates as work progresses.", aliases: [] },
+      { id: "ticket", title: "Ticket", icon: "🎫", desc: "A handoff artifact scoping one session of work. Stands alone, or hangs off a spec as one of its children.", aliases: [] },
+      { id: "compaction", title: "Compaction", icon: "🗜️", desc: "A handoff done in-memory: the previous session's history is summarised, and the summary seeds a fresh session. Lossy by design — the transcript is a primary source, the summary a secondary source.", aliases: [] },
+      { id: "autocompact", title: "Autocompact", icon: "🤖", desc: "Compaction triggered automatically by the harness when the context window approaches full. Transparent to the user but changes the session's knowledge profile.", aliases: [] }
+    ],
+    quiz: [
+      {
+        question: "What is the term for an in-memory handoff where session history is summarized into a fresh session?",
+        options: ["Compaction", "Clearing", "Spec", "Ticket"],
+        answer: 0,
+        explanation: "Compaction is a handoff done in-memory — the previous session's history is summarised and the summary seeds a fresh session."
+      },
+      {
+        question: "What type of handoff artifact describes a multi-session piece of work?",
+        options: ["Spec", "Ticket", "Handoff", "Artifact"],
+        answer: 0,
+        explanation: "A spec is a handoff artifact describing a multi-session piece of work — what's being built, not how each session does its share."
+      }
+    ]
+  },
+  {
+    id: 6,
+    title: "Memory and Steering",
+    icon: "🧭",
+    concepts: [
+      { id: "memory-system", title: "Memory system", icon: "🗄️", desc: "A system that attempts to make an agent stateful across sessions. Persists information into the environment during a session and reloads it into the context window at the start of future ones.", aliases: [] },
+      { id: "agents-md", title: "AGENTS.md", icon: "📘", desc: "A file in the environment that the harness loads into the context window at session start — the project's standing brief to the agent. Cross-harness convention; also called CLAUDE.md, GEMINI.md, etc.", aliases: ["CLAUDE.md", "GEMINI.md", "COPILOT.md"] },
+      { id: "progressive-disclosure", title: "Progressive disclosure", icon: "🎭", desc: "Loading only the context an agent needs right now, with context pointers to the rest. Borrowed from UI design — show only what's relevant to the current task.", aliases: [] },
+      { id: "context-pointer", title: "Context pointer", icon: "👉", desc: "A mention in one document that points to another, so the agent can pull it into the context window only when the task calls for it. The unit progressive disclosure is built from.", aliases: [] },
+      { id: "skill", title: "Skill", icon: "🎓", desc: "A teachable capability bundled as a unit — instructions and resources for doing one task well, kept in the environment until a context pointer pulls it into the context window for the task at hand.", aliases: [] },
+      { id: "subagent", title: "Subagent", icon: "🤖", desc: "An agent spawned by another agent via a tool call. Runs in its own session with its own context window, and reports a single tool result back. Good for parallelism and isolation.", aliases: [] }
+    ],
+    quiz: [
+      {
+        question: "Which file does a harness load into context at the start of each session as a project brief?",
+        options: ["AGENTS.md", "README.md", "SKILLS.md", "CONTEXT.md"],
+        answer: 0,
+        explanation: "AGENTS.md is loaded by the harness into the context window at session start — the project's standing brief to the agent."
+      },
+      {
+        question: "What is an agent spawned by another agent via a tool call?",
+        options: ["Subagent", "Session", "Harness", "Context"],
+        answer: 0,
+        explanation: "A subagent is an agent spawned by another agent via a tool call — runs in its own session and reports a single tool result back."
+      }
+    ]
+  },
+  {
+    id: 7,
+    title: "Patterns of Work",
+    icon: "⚙️",
+    concepts: [
+      { id: "human-in-the-loop", title: "Human-in-the-loop", icon: "👩‍💻", desc: "A working pattern where one or more humans pair with the agent during a session — reviewing, redirecting, or collaborating in real time. The human is present and engaged, not just gating individual actions.", aliases: ["HITL"] },
+      { id: "afk", title: "AFK", icon: "🚶", desc: "Away from keyboard. A working pattern where the user kicks off a session and leaves the agent to run unattended. The throughput multiplier of AI coding — many AFK sessions can run in parallel.", aliases: ["away from keyboard"] },
+      { id: "automated-check", title: "Automated check", icon: "✅", desc: "A deterministic verification that runs in the environment — tests, type checks, lints, build, pre-commit hooks. Pass/fail, no judgement. Stands in for human attention during AFK runs.", aliases: [] },
+      { id: "automated-review", title: "Automated review", icon: "🔍", desc: "An agent reviewing another agent's work, often with a different model or system prompt. Non-deterministic: it forms a judgement, not just a pass/fail check.", aliases: [] },
+      { id: "human-review", title: "Human review", icon: "👀", desc: "The user reading the code the agent produced and forming a judgement on it. Reading the diff counts; reading the agent's description of what it did does not — narration is not the same as review.", aliases: [] },
+      { id: "vibe-coding", title: "Vibe coding", icon: "🎸", desc: "A working pattern where the user accepts the agent's code without human review. The diff is treated as opaque — what matters is whether the program behaves, not what's inside.", aliases: [] },
+      { id: "design-concept", title: "Design concept", icon: "💡", desc: "The shared understanding of what's being built, held in common between user and agent but separate from any asset. Brooks' term: the conversation, handoff artifacts, and the code all express it.", aliases: [] },
+      { id: "grilling", title: "Grilling", icon: "🔥", desc: "A technique for developing a design concept with an agent: the agent interviews the user Socratically, one decision at a time, proposing a recommended answer for each.", aliases: [] },
+      { id: "prototyping", title: "Prototyping", icon: "🧪", desc: "Having the agent build a quick, rough version of something, for when conversation is too low-fidelity and you need a real artifact to talk about.", aliases: [] },
+      { id: "dx", title: "DX", icon: "🧑‍🔧", desc: "Developer experience — how easy a codebase and its toolchain make it for humans to do good work. Fast feedback, clear error messages, documentation that answers the question you actually have.", aliases: ["developer experience"] },
+      { id: "ax", title: "AX", icon: "🤖", desc: "Agent experience — how well the environment is set up for an agent to do good work in a codebase. The agent-facing counterpart to DX. Matters most in AFK runs.", aliases: ["agent experience"] }
+    ],
+    quiz: null  // last section — no quiz needed
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const STORAGE_KEY = 'ai-tech-tree-v1';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) { /* ignore */ }
+  return { unlockedSections: [1], viewedConcepts: {} };
+}
+
+function saveState(state) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { /* ignore */ }
+}
+
+let state = loadState();
+let quizContext = null; // { sectionId, quizIdx, selected, correct }
+
+// ============================================================
+// RENDER
+// ============================================================
+function render() {
+  const tree = document.getElementById('tech-tree');
+  tree.innerHTML = '';
+
+  SECTIONS.forEach((section, sIdx) => {
+    const isUnlocked = state.unlockedSections.includes(section.id);
+    const isNextUnlockable = sIdx > 0 && isUnlocked;
+    const prevSection = sIdx > 0 ? SECTIONS[sIdx - 1] : null;
+
+    if (sIdx > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'tier-connector';
+      conn.innerHTML = '<div class="tier-connector-arrow">▼</div>';
+      tree.appendChild(conn);
+    }
+
+    const viewedInSection = section.concepts.filter(c => state.viewedConcepts[c.id]).length;
+    const totalInSection = section.concepts.length;
+    const isCollapsed = !isUnlocked;
+
+    const tier = document.createElement('div');
+    tier.className = `tier ${isUnlocked ? 'unlocked' : 'locked'} ${isCollapsed ? 'collapsed' : ''}`;
+    tier.dataset.sectionId = section.id;
+
+    tier.innerHTML = `
+      <div class="tier-header" onclick="toggleTier(${section.id})">
+        <div class="tier-number">${section.id}</div>
+        <div class="tier-icon" style="font-size:1.1rem; flex-shrink:0">${section.icon}</div>
+        <div class="tier-name">Section ${section.id} — ${section.title}</div>
+        <div class="tier-badge">${isUnlocked ? `${viewedInSection}/${totalInSection} viewed` : '🔒 Locked'}</div>
+        <div class="tier-chevron">▼</div>
+      </div>
+      <div class="tier-body">
+        <div class="concepts-grid">
+          ${section.concepts.map(c => renderConceptCard(c, isUnlocked)).join('')}
+        </div>
+        ${renderGateway(section, isUnlocked)}
+      </div>
+    `;
+    tree.appendChild(tier);
+  });
+
+  updateProgress();
+}
+
+function renderConceptCard(concept, isUnlocked) {
+  const viewed = state.viewedConcepts[concept.id];
+  return `
+    <div class="concept-card ${viewed ? 'viewed' : ''}"
+         onclick="${isUnlocked ? `openConcept('${concept.id}')` : 'void(0)'}"
+         title="${isUnlocked ? concept.title : 'Unlock this section to view'}">
+      <div class="card-viewed-dot"></div>
+      <div class="card-icon">${concept.icon}</div>
+      <div class="card-title">${concept.title}</div>
+      <div class="card-desc">${concept.desc}</div>
+    </div>`;
+}
+
+function renderGateway(section, isUnlocked) {
+  const nextSection = SECTIONS.find(s => s.id === section.id + 1);
+  if (!nextSection) return '';
+
+  if (!isUnlocked) {
+    const prevSection = SECTIONS.find(s => s.id === section.id - 1);
+    return `
+      <div class="tier-gateway">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-text">Complete Section ${section.id - 1} quiz to unlock</div>
+      </div>`;
+  }
+
+  const nextUnlocked = state.unlockedSections.includes(nextSection.id);
+  if (nextUnlocked) {
+    return `
+      <div class="tier-gateway">
+        <span style="color:var(--green); font-size:0.85rem">✓ Section ${nextSection.id} unlocked</span>
+      </div>`;
+  }
+
+  return `
+    <div class="tier-gateway">
+      <span style="font-size:0.85rem; color:var(--text-muted)">Ready to advance?</span>
+      <button class="btn-quiz" onclick="startQuiz(${section.id})">
+        Take Quiz → Unlock Section ${nextSection.id}
+      </button>
+    </div>`;
+}
+
+function toggleTier(sectionId) {
+  const tier = document.querySelector(`.tier[data-section-id="${sectionId}"]`);
+  if (tier) tier.classList.toggle('collapsed');
+}
+
+// ============================================================
+// PROGRESS
+// ============================================================
+function updateProgress() {
+  const total = SECTIONS.length;
+  const unlocked = state.unlockedSections.length;
+  const pct = Math.round((unlocked / total) * 100);
+  document.getElementById('progress-text').textContent = `${unlocked} / ${total} sections`;
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+function resetProgress() {
+  if (!confirm('Reset all progress? This will lock all sections except Section 1.')) return;
+  state = { unlockedSections: [1], viewedConcepts: {} };
+  saveState(state);
+  render();
+}
+
+// ============================================================
+// CONCEPT MODAL
+// ============================================================
+function openConcept(conceptId) {
+  const concept = SECTIONS.flatMap(s => s.concepts).find(c => c.id === conceptId);
+  if (!concept) return;
+  const section = SECTIONS.find(s => s.concepts.some(c => c.id === conceptId));
+
+  // Mark as viewed
+  if (!state.viewedConcepts[conceptId]) {
+    state.viewedConcepts[conceptId] = true;
+    saveState(state);
+    // Update badge count in DOM
+    const tier = document.querySelector(`.tier[data-section-id="${section.id}"]`);
+    if (tier) {
+      const viewedInSection = section.concepts.filter(c => state.viewedConcepts[c.id]).length;
+      const badge = tier.querySelector('.tier-badge');
+      if (badge && state.unlockedSections.includes(section.id)) {
+        badge.textContent = `${viewedInSection}/${section.concepts.length} viewed`;
+      }
+      const card = tier.querySelector(`.concept-card[onclick*="${conceptId}"]`);
+      if (card) card.classList.add('viewed');
+    }
+  }
+
+  document.getElementById('cm-icon').textContent = concept.icon;
+  document.getElementById('cm-title').textContent = concept.title;
+  document.getElementById('cm-section').textContent = `Section ${section.id} — ${section.title}`;
+  document.getElementById('cm-desc').textContent = concept.desc;
+
+  // Aliases / tags
+  const tagsEl = document.getElementById('cm-tags');
+  tagsEl.innerHTML = concept.aliases.length
+    ? concept.aliases.map(a => `<span class="modal-tag">${a}</span>`).join('')
+    : '';
+
+  // Source link
+  const slug = concept.title.replace(/ /g, '%20');
+  document.getElementById('cm-source').innerHTML =
+    `<a href="https://github.com/mattpocock/dictionary-of-ai-coding/blob/main/dictionary/${slug}.md" target="_blank" rel="noopener">
+      View source on GitHub →
+    </a>`;
+
+  document.getElementById('concept-modal').classList.add('open');
+}
+
+function closeConceptModal(e) {
+  if (!e || e.target === document.getElementById('concept-modal')) {
+    document.getElementById('concept-modal').classList.remove('open');
+  }
+}
+
+// ============================================================
+// QUIZ MODAL
+// ============================================================
+let quizState = null;
+// quizState = { sectionId, questions, currentQ, answers, score }
+
+function startQuiz(sectionId) {
+  const section = SECTIONS.find(s => s.id === sectionId);
+  if (!section || !section.quiz) return;
+
+  quizState = {
+    sectionId,
+    questions: section.quiz,
+    currentQ: 0,
+    answers: [],
+    score: 0
+  };
+
+  const nextSection = SECTIONS.find(s => s.id === sectionId + 1);
+  document.getElementById('qm-title').textContent = `Unlock Section ${sectionId + 1}`;
+  document.getElementById('qm-subtitle').textContent =
+    `Quiz on Section ${sectionId} — ${section.title}`;
+
+  renderQuizQuestion();
+  document.getElementById('quiz-modal').classList.add('open');
+}
+
+function renderQuizQuestion() {
+  const { questions, currentQ } = quizState;
+  const q = questions[currentQ];
+  const body = document.getElementById('quiz-body');
+  const footer = document.getElementById('quiz-footer');
+
+  body.innerHTML = `
+    <div class="quiz-progress">Question ${currentQ + 1} of ${questions.length}</div>
+    <div class="quiz-question">${q.question}</div>
+    <div class="quiz-options" id="quiz-options">
+      ${q.options.map((opt, i) => `
+        <label class="quiz-option" id="opt-${i}">
+          <input type="radio" name="quiz-q" value="${i}" onchange="selectOption(${i})" />
+          ${opt}
+        </label>`).join('')}
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+  `;
+
+  footer.innerHTML = `
+    <button class="btn-secondary" onclick="closeQuizModal()">Cancel</button>
+    <button class="btn-primary" id="quiz-submit" onclick="submitAnswer()" disabled>
+      ${currentQ < questions.length - 1 ? 'Submit' : 'Submit & Finish'}
+    </button>
+  `;
+}
+
+function selectOption(idx) {
+  document.getElementById('quiz-submit').disabled = false;
+}
+
+function submitAnswer() {
+  const selected = document.querySelector('input[name="quiz-q"]:checked');
+  if (!selected) return;
+
+  const { questions, currentQ } = quizState;
+  const q = questions[currentQ];
+  const answer = parseInt(selected.value, 10);
+  const correct = answer === q.answer;
+
+  quizState.answers.push({ answer, correct });
+  if (correct) quizState.score++;
+
+  // Show feedback
+  const opts = document.querySelectorAll('.quiz-option');
+  opts.forEach(opt => opt.classList.add('disabled'));
+  opts[answer].classList.add(correct ? 'correct' : 'wrong');
+  if (!correct) opts[q.answer].classList.add('correct');
+
+  const fb = document.getElementById('quiz-feedback');
+  fb.textContent = correct
+    ? `✓ Correct! ${q.explanation}`
+    : `✗ Not quite. ${q.explanation}`;
+  fb.className = `quiz-feedback show ${correct ? 'correct' : 'wrong'}`;
+
+  // Update footer
+  const footer = document.getElementById('quiz-footer');
+  const isLast = currentQ >= questions.length - 1;
+  footer.innerHTML = `
+    <div style="flex:1; font-size:0.8rem; color:var(--text-muted)">
+      ${correct ? '✓ Correct' : '✗ Incorrect'} (${quizState.score}/${quizState.answers.length})
+    </div>
+    <button class="btn-primary" onclick="${isLast ? 'finishQuiz()' : 'nextQuestion()'}">
+      ${isLast ? 'See Results' : 'Next Question →'}
+    </button>
+  `;
+}
+
+function nextQuestion() {
+  quizState.currentQ++;
+  renderQuizQuestion();
+}
+
+function finishQuiz() {
+  const { sectionId, score, questions } = quizState;
+  const passed = score >= Math.ceil(questions.length / 2); // pass if ≥ 50%
+  const body = document.getElementById('quiz-body');
+  const footer = document.getElementById('quiz-footer');
+
+  body.innerHTML = `
+    <div class="quiz-result">
+      <div class="quiz-result-icon">${passed ? '🎉' : '😅'}</div>
+      <div class="score ${passed ? 'pass' : 'fail'}">${score} / ${questions.length}</div>
+      <h3>${passed ? 'Section Unlocked!' : 'Keep Learning'}</h3>
+      <p style="margin-top:0.5rem">
+        ${passed
+          ? `You got ${score} out of ${questions.length} correct. Section ${sectionId + 1} is now unlocked!`
+          : `You got ${score} out of ${questions.length}. Review the concepts and try again.`}
+      </p>
+    </div>
+  `;
+
+  footer.innerHTML = passed
+    ? `<button class="btn-primary" onclick="unlockSection(${sectionId + 1})">Open Section ${sectionId + 1} →</button>`
+    : `<button class="btn-secondary" onclick="closeQuizModal()">Review concepts</button>
+       <button class="btn-primary" onclick="retryQuiz(${sectionId})">Try Again</button>`;
+}
+
+function unlockSection(sectionId) {
+  if (!state.unlockedSections.includes(sectionId)) {
+    state.unlockedSections.push(sectionId);
+    saveState(state);
+  }
+  closeQuizModal();
+  render();
+  // Scroll to newly unlocked section
+  setTimeout(() => {
+    const tier = document.querySelector(`.tier[data-section-id="${sectionId}"]`);
+    if (tier) tier.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+function retryQuiz(sectionId) {
+  startQuiz(sectionId);
+}
+
+function closeQuizModal(e) {
+  if (!e || e.target === document.getElementById('quiz-modal')) {
+    document.getElementById('quiz-modal').classList.remove('open');
+    quizState = null;
+  }
+}
+
+// ============================================================
+// KEYBOARD SHORTCUTS
+// ============================================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeConceptModal();
+    closeQuizModal();
+  }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+render();
+</script>
+</body>
+</html>
