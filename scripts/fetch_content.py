@@ -30,6 +30,7 @@ REPO_API = f"https://api.github.com/repos/{SOURCE_REPO}"
 RAW_BASE = f"https://raw.githubusercontent.com/{SOURCE_REPO}/main"
 CURRICULUM_URL = f"{RAW_BASE}/internal/Curriculum.md"
 DATA_JSON = Path(__file__).parent.parent / "docs" / "data.json"
+# Keep cards concise while preserving enough context for the modal detail view.
 MAX_DESC_LENGTH = 520
 MAX_BODY_LENGTH = 2400
 
@@ -339,6 +340,7 @@ def parse_frontmatter(content: str) -> tuple[dict[str, str], str]:
 
 
 def markdown_to_plain_text(text: str) -> str:
+    """Strip the simple Markdown patterns used in upstream dictionary entries."""
     text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     text = re.sub(r"`([^`]+)`", r"\1", text)
     text = re.sub(r"\[([^\]]+)\]\([^\)]+\)", r"\1", text)
@@ -386,6 +388,7 @@ def parse_aliases(raw: str) -> list[str]:
 
 
 def parse_curriculum(markdown: str) -> list[dict[str, Any]]:
+    """Parse upstream curriculum headings, accepting em dash or copied hyphen separators."""
     sections: list[dict[str, Any]] = []
     current: dict[str, Any] | None = None
     # Upstream uses an em dash; allow hyphen-minus too so copied curriculum

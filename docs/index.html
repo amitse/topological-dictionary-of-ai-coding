@@ -762,13 +762,21 @@
 // ============================================================
 let SECTIONS = [];
 let siteData = null;
+const DATA_URL = 'data.json';
+const HTML_ENTITIES = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+};
 
 async function loadSiteData() {
   const tree = document.getElementById('tech-tree');
   tree.innerHTML = '<div class="loading-card">Loading the latest topological dictionary…</div>';
 
   try {
-    const response = await fetch('data.json');
+    const response = await fetch(DATA_URL);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     siteData = await response.json();
     SECTIONS = Array.isArray(siteData.sections) ? siteData.sections : [];
@@ -796,13 +804,7 @@ function updateMetadata() {
 }
 
 function escapeHtml(value) {
-  return String(value ?? '').replace(/[&<>"']/g, char => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-  }[char]));
+  return String(value ?? '').replace(/[&<>"']/g, char => HTML_ENTITIES[char]);
 }
 
 function escapeAttr(value) {
@@ -1024,6 +1026,7 @@ function startQuiz(sectionId) {
 function seededRandom(seed) {
   // Deterministic quiz shuffling keeps answer positions stable for a quiz
   // version while preventing every correct answer from sitting in slot A.
+  // Uses FNV-1a offset/prime constants to seed a tiny xorshift-style PRNG.
   let hash = 2166136261;
   for (let i = 0; i < seed.length; i++) {
     hash ^= seed.charCodeAt(i);
