@@ -16,7 +16,7 @@ and working patterns.
 
 This repository takes those concepts and:
 
-1. **Topologically sorts** them into 7 sections following the natural dependency graph
+1. **Topologically sorts** them into 7 sections using the upstream curriculum order
    (you need to understand _The Model_ before you can understand _Sessions_, which precede _Tools_,
    and so on).
 2. **Presents them as a tech tree** — an interactive website where each section is locked until
@@ -24,8 +24,8 @@ This repository takes those concepts and:
 3. **Unlocks via quiz** — each section transition requires passing a short 2-question quiz
    (inspired by the [teach skill](https://github.com/mattpocock/skills/tree/main/skills/productivity/teach)).
    Progress is stored in your browser's `localStorage`.
-4. **Stays up to date** — a GitHub Action syncs the latest concept content from the source
-   repository every Monday morning.
+4. **Stays up to date** — a GitHub Action fetches the upstream curriculum and concept Markdown,
+   writes the generated JSON data, and deploys the site every Monday morning.
 
 ## Section Map (Topological Order)
 
@@ -44,8 +44,9 @@ This repository takes those concepts and:
 ```
 docs/
   index.html          # Self-contained static website (served by GitHub Pages)
+  data.json           # Generated topological curriculum, concept content, and quizzes
 scripts/
-  fetch_content.py    # Fetches latest content from source and updates index.html
+  fetch_content.py    # Fetches latest upstream content and updates docs/data.json
 .github/workflows/
   pages.yml           # Deploys docs/ to GitHub Pages on push to main
   sync.yml            # Runs every Monday — syncs concept content from source repo
@@ -58,6 +59,9 @@ scripts/
 export GITHUB_TOKEN=your_token_here
 python scripts/fetch_content.py
 ```
+
+Then serve the `docs/` directory with any static file server so `index.html` can fetch
+`data.json`.
 
 ## Source
 

@@ -355,6 +355,308 @@
     footer a { color: var(--accent); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
 
+    /* POLISHED EXPERIENCE */
+    :root {
+      --bg: #070813;
+      --bg2: rgba(15, 23, 42, 0.78);
+      --bg3: rgba(17, 24, 39, 0.84);
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #f8fafc;
+      --text-muted: #a7b0c3;
+      --accent: #8b5cf6;
+      --accent-2: #06b6d4;
+      --accent-glow: rgba(139, 92, 246, 0.24);
+      --green: #34d399;
+      --green-glow: rgba(52, 211, 153, 0.24);
+      --red: #fb7185;
+      --locked: rgba(15, 23, 42, 0.45);
+      --locked-border: rgba(100, 116, 139, 0.16);
+      --locked-text: #64748b;
+      --shadow-lg: 0 24px 80px rgba(0, 0, 0, 0.38);
+      --shadow-md: 0 16px 42px rgba(0, 0, 0, 0.24);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+    }
+    body {
+      background:
+        radial-gradient(circle at top left, rgba(139, 92, 246, 0.22), transparent 32rem),
+        radial-gradient(circle at top right, rgba(6, 182, 212, 0.16), transparent 28rem),
+        linear-gradient(180deg, #080a18 0%, #0b1020 45%, #080a13 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      letter-spacing: -0.01em;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.75), transparent 70%);
+    }
+    header {
+      top: 0.75rem;
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0.75rem auto 0;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(8, 13, 28, 0.78);
+      box-shadow: 0 12px 38px rgba(0, 0, 0, 0.32);
+      backdrop-filter: blur(22px) saturate(140%);
+    }
+    .header-title {
+      font-size: 0.95rem;
+      letter-spacing: -0.02em;
+    }
+    .header-source {
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.03);
+    }
+    .progress-wrap { min-width: 240px; }
+    .progress-bar {
+      height: 8px;
+      background: rgba(148, 163, 184, 0.18);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .progress-fill {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--green));
+      box-shadow: 0 0 24px rgba(6, 182, 212, 0.36);
+    }
+    .btn-reset,
+    .btn-secondary {
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+    }
+    .hero {
+      width: min(1040px, calc(100% - 2rem));
+      margin: 2.25rem auto 0;
+      padding: clamp(3rem, 7vw, 6.5rem) 1.5rem 2.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.16);
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(139, 92, 246, 0.16), rgba(6, 182, 212, 0.07)),
+        rgba(15, 23, 42, 0.34);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: auto 10% -45% 10%;
+      height: 70%;
+      background: radial-gradient(ellipse, rgba(139,92,246,0.22), transparent 70%);
+      filter: blur(20px);
+      pointer-events: none;
+    }
+    .hero h1 {
+      font-size: clamp(2.6rem, 7vw, 5.8rem);
+      line-height: 0.95;
+      max-width: 900px;
+      margin: 0 auto 1.1rem;
+      background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 42%, #67e8f9 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p {
+      max-width: 680px;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      color: #cbd5e1;
+    }
+    .hero-badges { margin-top: 1.4rem; gap: 0.65rem; }
+    .badge {
+      padding: 0.45rem 0.8rem;
+      border-color: rgba(148, 163, 184, 0.2);
+      background: rgba(15, 23, 42, 0.62);
+      color: #dbeafe;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .tech-tree {
+      max-width: 1180px;
+      padding: 2rem 1rem 5rem;
+    }
+    .tier {
+      margin-bottom: 0;
+      filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.18));
+    }
+    .tier-header {
+      padding: 1.15rem 1.25rem;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      background:
+        linear-gradient(135deg, rgba(139,92,246,0.13), rgba(6,182,212,0.05)),
+        rgba(15, 23, 42, 0.82);
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+    .tier-header:hover {
+      background:
+        linear-gradient(135deg, rgba(139,92,246,0.2), rgba(6,182,212,0.09)),
+        rgba(15, 23, 42, 0.92);
+      border-color: rgba(139, 92, 246, 0.44);
+      transform: translateY(-1px);
+    }
+    .tier-number {
+      width: 34px;
+      height: 34px;
+      border-width: 1px;
+      background: rgba(255,255,255,0.04);
+    }
+    .tier.unlocked .tier-number {
+      border-color: rgba(139, 92, 246, 0.8);
+      color: #ddd6fe;
+      box-shadow: 0 0 24px rgba(139, 92, 246, 0.24);
+    }
+    .tier-name {
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+    .tier-badge {
+      padding: 0.36rem 0.7rem;
+      border-radius: 999px;
+      backdrop-filter: blur(10px);
+    }
+    .tier-body {
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+      background: rgba(8, 13, 28, 0.58);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.03);
+    }
+    .concepts-grid {
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+      gap: 0.9rem;
+      padding: 1.15rem;
+    }
+    .concept-card {
+      min-height: 190px;
+      border-radius: 16px;
+      padding: 1rem;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.015)),
+        rgba(15, 23, 42, 0.76);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    }
+    .concept-card:hover {
+      border-color: rgba(139, 92, 246, 0.62);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md), 0 0 34px var(--accent-glow);
+    }
+    .concept-card .card-icon {
+      display: inline-grid;
+      place-items: center;
+      width: 2.25rem;
+      height: 2.25rem;
+      margin-bottom: 0.8rem;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      font-size: 1.25rem;
+    }
+    .concept-card .card-title {
+      font-size: 0.98rem;
+      line-height: 1.25;
+      margin-bottom: 0.45rem;
+    }
+    .concept-card .card-desc {
+      font-size: 0.79rem;
+      line-height: 1.55;
+      -webkit-line-clamp: 4;
+    }
+    .card-order {
+      position: absolute;
+      left: 1rem;
+      bottom: 0.85rem;
+      font-size: 0.66rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7dd3fc;
+      opacity: 0.75;
+    }
+    .concept-card.viewed {
+      border-color: rgba(52, 211, 153, 0.46);
+      background:
+        linear-gradient(180deg, rgba(52, 211, 153, 0.08), rgba(255,255,255,0.015)),
+        rgba(15, 23, 42, 0.76);
+    }
+    .concept-card .card-viewed-dot {
+      top: 0.9rem;
+      right: 0.9rem;
+      width: 8px;
+      height: 8px;
+      box-shadow: 0 0 18px var(--green);
+    }
+    .tier-gateway {
+      padding: 1.1rem;
+      background: rgba(255,255,255,0.025);
+    }
+    .btn-quiz,
+    .btn-primary {
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), #7c3aed 48%, var(--accent-2));
+      box-shadow: 0 12px 28px rgba(139, 92, 246, 0.24);
+    }
+    .btn-quiz:hover,
+    .btn-primary:hover {
+      box-shadow: 0 16px 38px rgba(139, 92, 246, 0.36);
+    }
+    .tier-connector {
+      height: 44px;
+      opacity: 0.8;
+    }
+    .tier-connector::before {
+      width: 1px;
+      background: linear-gradient(180deg, rgba(139,92,246,0.55), rgba(6,182,212,0.1));
+    }
+    .modal-overlay {
+      background: rgba(2, 6, 23, 0.76);
+      backdrop-filter: blur(12px);
+    }
+    .modal-box {
+      max-width: 680px;
+      border-radius: 22px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.02)),
+        #0f172a;
+      box-shadow: var(--shadow-lg);
+    }
+    .modal-header,
+    .quiz-footer,
+    .modal-source-link {
+      border-color: rgba(148, 163, 184, 0.16);
+    }
+    .modal-desc {
+      white-space: pre-line;
+      color: #cbd5e1;
+    }
+    .quiz-option {
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      background: rgba(15, 23, 42, 0.74);
+    }
+    .loading-card,
+    .error-card {
+      display: grid;
+      gap: 0.35rem;
+      place-items: center;
+      min-height: 220px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      background: rgba(15, 23, 42, 0.62);
+      color: var(--text-muted);
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .error-card strong { color: var(--text); }
+    .error-card code {
+      color: #bae6fd;
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(14, 165, 233, 0.24);
+      border-radius: 6px;
+      padding: 0.1rem 0.35rem;
+    }
+
     /* SCROLLBAR */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--bg); }
@@ -376,7 +678,7 @@
   <div class="header-source">
     Source:
     <a href="https://github.com/mattpocock/dictionary-of-ai-coding" target="_blank" rel="noopener">
-      mattpocock/dictionary-of-ai-coding
+      <span id="source-label">mattpocock/dictionary-of-ai-coding</span>
     </a>
   </div>
   <div class="progress-wrap">
@@ -394,8 +696,8 @@
   <h1>AI Coding Tech Tree</h1>
   <p>Master the vocabulary of AI coding — from foundational model concepts to advanced working patterns. Unlock each section by passing a short quiz.</p>
   <div class="hero-badges">
-    <span class="badge">68 concepts</span>
-    <span class="badge">7 sections</span>
+    <span class="badge" id="concept-count">68 concepts</span>
+    <span class="badge" id="section-count">7 sections</span>
     <span class="badge">Topologically sorted</span>
     <span class="badge">Quiz to unlock</span>
     <span class="badge">Progress saved locally</span>
@@ -403,7 +705,7 @@
 </div>
 
 <!-- TECH TREE -->
-<div class="tech-tree" id="tech-tree"></div>
+<div class="tech-tree" id="tech-tree" aria-live="polite"></div>
 
 <!-- CONCEPT DETAIL MODAL -->
 <div class="modal-overlay" id="concept-modal" onclick="closeConceptModal(event)">
@@ -449,227 +751,42 @@
 
 <script>
 // ============================================================
-// DATA — auto-updated by scripts/fetch_content.py (run via .github/workflows/sync.yml)
+// DATA — generated by scripts/fetch_content.py into docs/data.json
 // ============================================================
-const SECTIONS = [
-  {
-    id: 1,
-    title: "The Model",
-    icon: "🧠",
-    concepts: [
-      { id: "ai", title: "AI", icon: "🤖", desc: "A moving label, not a technology. \"AI\" doesn't name a fixed thing — it points at whatever computers can newly, impressively do. Right now it points at large language models.", aliases: ["artificial intelligence"] },
-      { id: "model", title: "Model", icon: "⚙️", desc: "The parameters. Stateless — does next-token prediction and nothing else. \"Claude Opus\" and \"GPT-5\" are models. On its own a model can't do anything agentic; it has to be harnessed.", aliases: ["LLM", "language model"] },
-      { id: "parameters", title: "Parameters", icon: "🔢", desc: "The numbers inside a model — often billions of them — tuned during training. Everything the model \"knows\" lives in them. Training sets them; inference uses them unchanged. Also called weights.", aliases: ["weights"] },
-      { id: "training", title: "Training", icon: "🏋️", desc: "The process that sets a model's parameters by exposing it to vast amounts of text and adjusting parameters to improve next-token prediction. A one-time, expensive process done by the model provider.", aliases: [] },
-      { id: "inference", title: "Inference", icon: "⚡", desc: "Running a trained model to generate output — what happens on every model provider request. Parameters stay fixed; the model just does next-token prediction over the context it's given.", aliases: [] },
-      { id: "token", title: "Token", icon: "🔤", desc: "The atomic unit a model reads and writes. Roughly word-sized but not exactly — common words are one token, rare or long ones split into several. Roughly 750 words ≈ 1,000 tokens.", aliases: [] },
-      { id: "next-token-prediction", title: "Next-token prediction", icon: "🎯", desc: "What the model actually does. Given a context, it samples one next token, appends it, and runs again — until it produces a stop token. The entire output of every model is a sequence of these single steps.", aliases: [] },
-      { id: "non-determinism", title: "Non-determinism", icon: "🎲", desc: "The same input can produce different output. Run a model twice with identical context and you may get two different answers — sometimes a word, sometimes a completely different approach.", aliases: [] },
-      { id: "model-provider", title: "Model provider", icon: "☁️", desc: "Whatever serves a model for inference. Usually a remote service (Anthropic, OpenAI, Google), but can also be local — Ollama, LM Studio, llama.cpp running on your own machine.", aliases: [] },
-      { id: "harness", title: "Harness", icon: "🔧", desc: "Everything around the model that turns it into an agent: tools, system prompt, context-window management, permissions, hooks. Claude.ai and Claude Code run on the same model but behave differently because they have different harnesses.", aliases: [] },
-      { id: "model-provider-request", title: "Model provider request", icon: "📡", desc: "One round-trip from the harness to the model provider. The harness sends the current context; the provider returns one response (a tool call or a final answer).", aliases: [] },
-      { id: "input-tokens", title: "Input tokens", icon: "📥", desc: "Tokens the harness sends on each model provider request — the system prompt, the conversation history, tool results, everything the model reads before it writes. Billed at a lower rate than output tokens.", aliases: [] },
-      { id: "output-tokens", title: "Output tokens", icon: "📤", desc: "Tokens the model generates back. Billed at a higher rate than input tokens — commonly around five times the rate — since they cost more compute to produce.", aliases: [] },
-      { id: "prefix-cache", title: "Prefix cache", icon: "💾", desc: "The provider-side store that lets consecutive model provider requests skip re-processing a shared prefix. When the start of a request matches a recent one, the provider reuses the computation.", aliases: [] },
-      { id: "cache-tokens", title: "Cache tokens", icon: "🏪", desc: "Input tokens the provider has cached from a previous request so it doesn't have to re-process them. Usually billed at a steep discount — often 10–20% of the standard input-token price.", aliases: [] }
-    ],
-    quiz: [
-      {
-        question: "What is the atomic unit a language model reads and writes?",
-        options: ["Token", "Pixel", "Byte", "Word"],
-        answer: 0,
-        explanation: "A token is the atomic unit — roughly word-sized but not exactly. Common words are one token; rare or long words split into several."
-      },
-      {
-        question: "What wraps a model with tools, system prompt, and context management to make it an agent?",
-        options: ["Harness", "Session", "Sandbox", "Training"],
-        answer: 0,
-        explanation: "The harness is everything around the model that turns it into an agent — tools, system prompt, context-window management, permissions."
-      }
-    ]
-  },
-  {
-    id: 2,
-    title: "Sessions, Context Windows & Turns",
-    icon: "💬",
-    concepts: [
-      { id: "stateless", title: "Stateless", icon: "🧹", desc: "Carries no information forward. The model is stateless across model provider requests — each request resends the full context window, because the model has no way to see anything else.", aliases: [] },
-      { id: "context", title: "Context", icon: "📖", desc: "The relevant information the agent has access to right now. Not the raw input the model sees (that's the context window) — what the agent actually has available to reason about.", aliases: [] },
-      { id: "context-window", title: "Context window", icon: "🪟", desc: "Everything the model sees on each model provider request. Finite, model-specific, and the only surface through which the model perceives anything. Once full, something must give.", aliases: [] },
-      { id: "stateful", title: "Stateful", icon: "🗃️", desc: "Carries information forward. A session is stateful across turns — context accumulates as the session runs, which is why long sessions drift into a \"dumb zone\" of attention degradation.", aliases: [] },
-      { id: "agent", title: "Agent", icon: "🤝", desc: "A model harnessed with tools, a system prompt, and a context window, that takes turns with a user. Claude Code is an agent; the raw model API is not.", aliases: [] },
-      { id: "system-prompt", title: "System prompt", icon: "📋", desc: "The instructions the harness prepends to every model provider request — the agent's standing brief: who it is, how to behave, which tools it can call, what conventions to follow.", aliases: [] },
-      { id: "session", title: "Session", icon: "⏱️", desc: "One bounded run of interaction with an agent. Starts empty, accumulates messages, tool results, and files read, and ends when cleared, closed, or compacted into a fresh session.", aliases: [] },
-      { id: "turn", title: "Turn", icon: "🔄", desc: "One user message plus everything the agent does in response, up until it yields back to the user. Contains one or more model provider requests — many, if the agent calls tools.", aliases: [] }
-    ],
-    quiz: [
-      {
-        question: "What is the finite space the model sees on every single request?",
-        options: ["Context window", "System prompt", "Session history", "Memory system"],
-        answer: 0,
-        explanation: "The context window is everything the model sees on each request — it's finite and model-specific, the only surface through which the model perceives anything."
-      },
-      {
-        question: "What is a model harnessed with tools and a system prompt called?",
-        options: ["Agent", "Harness", "Session", "Turn"],
-        answer: 0,
-        explanation: "An agent is a model harnessed with tools, a system prompt, and a context window, that takes turns with a user."
-      }
-    ]
-  },
-  {
-    id: 3,
-    title: "Tools & Environment",
-    icon: "🛠️",
-    concepts: [
-      { id: "environment", title: "Environment", icon: "🌍", desc: "The world the agent acts on — anything outside the harness that the agent perceives through tool results and changes through tool calls. The harness runs the agent; the environment is what the agent works in.", aliases: [] },
-      { id: "filesystem", title: "Filesystem", icon: "📁", desc: "A tree of files and directories the agent reads from, writes to, and executes within — the default kind of environment for a coding agent. AGENTS.md, skills, source code all live here.", aliases: [] },
-      { id: "tool", title: "Tool", icon: "🔨", desc: "A function the harness exposes for the agent to call — Read, Write, Bash, Search. Tools are how an agent perceives and acts on the environment; it can't see or do anything without them.", aliases: [] },
-      { id: "tool-call", title: "Tool call", icon: "📞", desc: "The model's output naming a tool and its arguments — just structured text. It doesn't do anything on its own; the harness has to read it and execute it.", aliases: [] },
-      { id: "tool-result", title: "Tool result", icon: "📬", desc: "What the harness sends back after executing a tool call — the file contents, the command output, the error. The agent's only view of the environment.", aliases: [] },
-      { id: "mcp", title: "MCP", icon: "🔌", desc: "Model Context Protocol. A protocol for plugging external tool servers into a harness — how an agent gets tools beyond what the harness ships with. The agent calls a tool; MCP handles the rest.", aliases: ["Model Context Protocol"] },
-      { id: "permission-request", title: "Permission request", icon: "🙋", desc: "What the harness shows the user before executing a tool call that isn't pre-approved. The model produces a tool call; instead of running it immediately, the harness pauses and asks.", aliases: [] },
-      { id: "permission-mode", title: "Permission mode", icon: "🔐", desc: "The permission-gating slice of an agent mode — which tool calls trigger a permission request and which run automatically.", aliases: [] },
-      { id: "agent-mode", title: "Agent mode", icon: "🎚️", desc: "A preset that shapes how the agent operates at runtime — bundles a permission mode with behavioral instructions injected into the system prompt.", aliases: [] },
-      { id: "sandbox", title: "Sandbox", icon: "📦", desc: "An isolated environment the agent runs inside — a container, VM, ephemeral filesystem, or restricted-permission shell. Limits the blast radius of agent actions.", aliases: [] }
-    ],
-    quiz: [
-      {
-        question: "What is a tool call in AI agent systems?",
-        options: [
-          "The model's output naming a tool and its arguments",
-          "A harness function that runs shell commands",
-          "A user request to execute external code",
-          "An API call to a remote service endpoint"
-        ],
-        answer: 0,
-        explanation: "A tool call is the model's output naming a tool and its arguments — just structured text. The harness has to read it and execute it."
-      },
-      {
-        question: "What protocol allows external servers to plug tools into a harness?",
-        options: [
-          "MCP — Model Context Protocol",
-          "API — Application Program Interface",
-          "CLI — Command Line Interface",
-          "SDK — Software Development Kit"
-        ],
-        answer: 0,
-        explanation: "MCP (Model Context Protocol) is the protocol for plugging external tool servers into a harness."
-      }
-    ]
-  },
-  {
-    id: 4,
-    title: "Failure Modes",
-    icon: "⚠️",
-    concepts: [
-      { id: "sycophancy", title: "Sycophancy", icon: "🪞", desc: "Confidently agreeable model output. Caused by training: the model was shaped to favor answers humans liked, and humans tend to like agreement more than correction.", aliases: [] },
-      { id: "hallucination", title: "Hallucination", icon: "👻", desc: "Confidently-wrong model output. Two flavors: parametric confabulation (the model makes up facts from training gaps) and faithfulness hallucination (the model ignores context it was given).", aliases: [] },
-      { id: "parametric-knowledge", title: "Parametric knowledge", icon: "📚", desc: "What the model \"knows\" from training, stored in its parameters. Frozen at training time — the model can't see its own parameters or update them. Contrasts with contextual knowledge.", aliases: [] },
-      { id: "knowledge-cutoff", title: "Knowledge cutoff", icon: "📅", desc: "The date past which a model has no parametric knowledge. Libraries, APIs, and events from after the cutoff are fabrication traps unless their docs are loaded as contextual knowledge.", aliases: [] },
-      { id: "contextual-knowledge", title: "Contextual knowledge", icon: "🔍", desc: "Facts the agent can read directly from the context right now — the user's task, files the agent has read in, tool results, AGENTS.md content. Counterpart to parametric knowledge.", aliases: [] },
-      { id: "attention-relationship", title: "Attention relationship", icon: "🕸️", desc: "When predicting each token, the model factors in every other token in the context. The pairing between two tokens is an attention relationship — meaningful relationships carry strong signals.", aliases: [] },
-      { id: "attention-budget", title: "Attention budget", icon: "💰", desc: "Each token has a finite amount of influence to distribute across the rest of the context. Heavy influence on one relationship leaves less for others.", aliases: [] },
-      { id: "attention-degradation", title: "Attention degradation", icon: "📉", desc: "As a session grows, each token's attention budget is spread across more competitors. The signal on any one meaningful relationship shrinks; noise from irrelevant context crowds in.", aliases: [] },
-      { id: "smart-zone", title: "Smart zone", icon: "🎯", desc: "Early in a session the agent is in a \"smart zone\" — sharp, focused, recall is good. As the session grows it drifts into a \"dumb zone\": sloppier, forgetful, more mistakes.", aliases: ["dumb zone"] }
-    ],
-    quiz: [
-      {
-        question: "What is the term for confidently wrong model output?",
-        options: ["Hallucination", "Sycophancy", "Degradation", "Compaction"],
-        answer: 0,
-        explanation: "Hallucination is confidently-wrong model output — either made-up facts (parametric confabulation) or ignoring given context (faithfulness hallucination)."
-      },
-      {
-        question: "As a session grows longer, the signal from meaningful attention relationships tends to what?",
-        options: [
-          "Shrink as budget spreads over more tokens",
-          "Grow stronger with more context available",
-          "Stay perfectly consistent throughout the run",
-          "Reset automatically after every tool call"
-        ],
-        answer: 0,
-        explanation: "Attention degradation: as the session grows, each token's attention budget spreads across more competitors, weakening the signal on any one meaningful relationship."
-      }
-    ]
-  },
-  {
-    id: 5,
-    title: "Handoffs",
-    icon: "🤲",
-    concepts: [
-      { id: "clearing", title: "Clearing", icon: "🧽", desc: "Ending the current session and starting a fresh one. The next message begins with an empty session and an empty context window — the primary defense against attention degradation.", aliases: [] },
-      { id: "handoff", title: "Handoff", icon: "🏃", desc: "Transferring agent context from one session to another. The carry mechanism varies — a written handoff artifact, an in-memory summary (compaction), and others.", aliases: [] },
-      { id: "primary-source", title: "Primary source", icon: "📜", desc: "A source of truth in its original form — the code, the conversation transcript, the raw log, the actual API response. Not an account of the thing; the thing itself.", aliases: [] },
-      { id: "secondary-source", title: "Secondary source", icon: "📝", desc: "An account of a primary source, one step removed — documentation describing code, a summary describing a transcript. Cheaper to load into context, but lossy.", aliases: [] },
-      { id: "handoff-artifact", title: "Handoff artifact", icon: "📄", desc: "A document used as the carry mechanism for a handoff — written to the environment by one session to be read by another. Specs, tickets, and plan docs are all handoff artifacts.", aliases: [] },
-      { id: "spec", title: "Spec", icon: "📐", desc: "A handoff artifact describing a multi-session piece of work — what's being built, not how each session does its share. Mutates as work progresses.", aliases: [] },
-      { id: "ticket", title: "Ticket", icon: "🎫", desc: "A handoff artifact scoping one session of work. Stands alone, or hangs off a spec as one of its children.", aliases: [] },
-      { id: "compaction", title: "Compaction", icon: "🗜️", desc: "A handoff done in-memory: the previous session's history is summarised, and the summary seeds a fresh session. Lossy by design — the transcript is a primary source, the summary a secondary source.", aliases: [] },
-      { id: "autocompact", title: "Autocompact", icon: "🤖", desc: "Compaction triggered automatically by the harness when the context window approaches full. Transparent to the user but changes the session's knowledge profile.", aliases: [] }
-    ],
-    quiz: [
-      {
-        question: "What is the term for an in-memory handoff where session history is summarized into a fresh session?",
-        options: ["Compaction", "Clearing", "Spec", "Ticket"],
-        answer: 0,
-        explanation: "Compaction is a handoff done in-memory — the previous session's history is summarised and the summary seeds a fresh session."
-      },
-      {
-        question: "What type of handoff artifact describes a multi-session piece of work?",
-        options: ["Spec", "Ticket", "Handoff", "Artifact"],
-        answer: 0,
-        explanation: "A spec is a handoff artifact describing a multi-session piece of work — what's being built, not how each session does its share."
-      }
-    ]
-  },
-  {
-    id: 6,
-    title: "Memory and Steering",
-    icon: "🧭",
-    concepts: [
-      { id: "memory-system", title: "Memory system", icon: "🗄️", desc: "A system that attempts to make an agent stateful across sessions. Persists information into the environment during a session and reloads it into the context window at the start of future ones.", aliases: [] },
-      { id: "agents-md", title: "AGENTS.md", icon: "📘", desc: "A file in the environment that the harness loads into the context window at session start — the project's standing brief to the agent. Cross-harness convention; also called CLAUDE.md, GEMINI.md, etc.", aliases: ["CLAUDE.md", "GEMINI.md", "COPILOT.md"] },
-      { id: "progressive-disclosure", title: "Progressive disclosure", icon: "🎭", desc: "Loading only the context an agent needs right now, with context pointers to the rest. Borrowed from UI design — show only what's relevant to the current task.", aliases: [] },
-      { id: "context-pointer", title: "Context pointer", icon: "👉", desc: "A mention in one document that points to another, so the agent can pull it into the context window only when the task calls for it. The unit progressive disclosure is built from.", aliases: [] },
-      { id: "skill", title: "Skill", icon: "🎓", desc: "A teachable capability bundled as a unit — instructions and resources for doing one task well, kept in the environment until a context pointer pulls it into the context window for the task at hand.", aliases: [] },
-      { id: "subagent", title: "Subagent", icon: "🤖", desc: "An agent spawned by another agent via a tool call. Runs in its own session with its own context window, and reports a single tool result back. Good for parallelism and isolation.", aliases: [] }
-    ],
-    quiz: [
-      {
-        question: "Which file does a harness load into context at the start of each session as a project brief?",
-        options: ["AGENTS.md", "README.md", "SKILLS.md", "CONTEXT.md"],
-        answer: 0,
-        explanation: "AGENTS.md is loaded by the harness into the context window at session start — the project's standing brief to the agent."
-      },
-      {
-        question: "What is an agent spawned by another agent via a tool call?",
-        options: ["Subagent", "Session", "Harness", "Context"],
-        answer: 0,
-        explanation: "A subagent is an agent spawned by another agent via a tool call — runs in its own session and reports a single tool result back."
-      }
-    ]
-  },
-  {
-    id: 7,
-    title: "Patterns of Work",
-    icon: "⚙️",
-    concepts: [
-      { id: "human-in-the-loop", title: "Human-in-the-loop", icon: "👩‍💻", desc: "A working pattern where one or more humans pair with the agent during a session — reviewing, redirecting, or collaborating in real time. The human is present and engaged, not just gating individual actions.", aliases: ["HITL"] },
-      { id: "afk", title: "AFK", icon: "🚶", desc: "Away from keyboard. A working pattern where the user kicks off a session and leaves the agent to run unattended. The throughput multiplier of AI coding — many AFK sessions can run in parallel.", aliases: ["away from keyboard"] },
-      { id: "automated-check", title: "Automated check", icon: "✅", desc: "A deterministic verification that runs in the environment — tests, type checks, lints, build, pre-commit hooks. Pass/fail, no judgement. Stands in for human attention during AFK runs.", aliases: [] },
-      { id: "automated-review", title: "Automated review", icon: "🔍", desc: "An agent reviewing another agent's work, often with a different model or system prompt. Non-deterministic: it forms a judgement, not just a pass/fail check.", aliases: [] },
-      { id: "human-review", title: "Human review", icon: "👀", desc: "The user reading the code the agent produced and forming a judgement on it. Reading the diff counts; reading the agent's description of what it did does not — narration is not the same as review.", aliases: [] },
-      { id: "vibe-coding", title: "Vibe coding", icon: "🎸", desc: "A working pattern where the user accepts the agent's code without human review. The diff is treated as opaque — what matters is whether the program behaves, not what's inside.", aliases: [] },
-      { id: "design-concept", title: "Design concept", icon: "💡", desc: "The shared understanding of what's being built, held in common between user and agent but separate from any asset. Brooks' term: the conversation, handoff artifacts, and the code all express it.", aliases: [] },
-      { id: "grilling", title: "Grilling", icon: "🔥", desc: "A technique for developing a design concept with an agent: the agent interviews the user Socratically, one decision at a time, proposing a recommended answer for each.", aliases: [] },
-      { id: "prototyping", title: "Prototyping", icon: "🧪", desc: "Having the agent build a quick, rough version of something, for when conversation is too low-fidelity and you need a real artifact to talk about.", aliases: [] },
-      { id: "dx", title: "DX", icon: "🧑‍🔧", desc: "Developer experience — how easy a codebase and its toolchain make it for humans to do good work. Fast feedback, clear error messages, documentation that answers the question you actually have.", aliases: ["developer experience"] },
-      { id: "ax", title: "AX", icon: "🤖", desc: "Agent experience — how well the environment is set up for an agent to do good work in a codebase. The agent-facing counterpart to DX. Matters most in AFK runs.", aliases: ["agent experience"] }
-    ],
-    quiz: null  // last section — no quiz needed
+let SECTIONS = [];
+let siteData = null;
+
+async function loadSiteData() {
+  const tree = document.getElementById('tech-tree');
+  tree.innerHTML = '<div class="loading-card">Loading the latest topological dictionary…</div>';
+
+  try {
+    const response = await fetch('data.json', { cache: 'no-cache' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    siteData = await response.json();
+    SECTIONS = Array.isArray(siteData.sections) ? siteData.sections : [];
+    if (!SECTIONS.length) throw new Error('No sections found in generated data');
+    updateMetadata();
+    render();
+  } catch (error) {
+    console.error('Could not load generated site data', error);
+    tree.innerHTML = `
+      <div class="error-card">
+        <strong>Could not load generated data.</strong>
+        <span>Run <code>python scripts/fetch_content.py</code> and refresh the page.</span>
+      </div>`;
   }
-];
+}
+
+function updateMetadata() {
+  const conceptCount = SECTIONS.reduce((total, section) => total + section.concepts.length, 0);
+  const conceptBadge = document.getElementById('concept-count');
+  const sectionBadge = document.getElementById('section-count');
+  const sourceBadge = document.getElementById('source-label');
+  if (conceptBadge) conceptBadge.textContent = `${conceptCount} concepts`;
+  if (sectionBadge) sectionBadge.textContent = `${SECTIONS.length} sections`;
+  if (sourceBadge && siteData?.source?.repository) sourceBadge.textContent = siteData.source.repository;
+}
 
 // ============================================================
 // STATE
@@ -749,6 +866,7 @@ function renderConceptCard(concept, isUnlocked) {
       <div class="card-icon">${concept.icon}</div>
       <div class="card-title">${concept.title}</div>
       <div class="card-desc">${concept.desc}</div>
+      <div class="card-order">Topo #${concept.topologicalIndex}</div>
     </div>`;
 }
 
@@ -833,7 +951,7 @@ function openConcept(conceptId) {
   document.getElementById('cm-icon').textContent = concept.icon;
   document.getElementById('cm-title').textContent = concept.title;
   document.getElementById('cm-section').textContent = `Section ${section.id} — ${section.title}`;
-  document.getElementById('cm-desc').textContent = concept.desc;
+  document.getElementById('cm-desc').textContent = concept.body || concept.desc;
 
   // Aliases / tags
   const tagsEl = document.getElementById('cm-tags');
@@ -842,9 +960,8 @@ function openConcept(conceptId) {
     : '';
 
   // Source link
-  const slug = encodeURIComponent(concept.title);
   document.getElementById('cm-source').innerHTML =
-    `<a href="https://github.com/mattpocock/dictionary-of-ai-coding/blob/main/dictionary/${slug}.md" target="_blank" rel="noopener">
+    `<a href="${concept.sourceUrl}" target="_blank" rel="noopener">
       View source on GitHub →
     </a>`;
 
@@ -869,7 +986,7 @@ function startQuiz(sectionId) {
 
   quizState = {
     sectionId,
-    questions: section.quiz,
+    questions: section.quiz.map(shuffleQuizQuestion),
     currentQ: 0,
     answers: [],
     score: 0
@@ -882,6 +999,19 @@ function startQuiz(sectionId) {
 
   renderQuizQuestion();
   document.getElementById('quiz-modal').classList.add('open');
+}
+
+function shuffleQuizQuestion(question) {
+  const options = question.options.map((text, index) => ({ text, index }));
+  for (let i = options.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [options[i], options[j]] = [options[j], options[i]];
+  }
+  return {
+    ...question,
+    options: options.map(option => option.text),
+    answer: options.findIndex(option => option.index === question.answer),
+  };
 }
 
 function renderQuizQuestion() {
@@ -1020,7 +1150,7 @@ document.addEventListener('keydown', e => {
 // ============================================================
 // INIT
 // ============================================================
-render();
+loadSiteData();
 </script>
 </body>
 </html>
