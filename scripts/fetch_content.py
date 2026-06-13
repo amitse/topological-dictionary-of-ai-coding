@@ -306,7 +306,7 @@ def make_request(url: str) -> dict[str, Any] | list[Any] | str:
     req.add_header("User-Agent", "topological-dictionary-sync/2.0")
     token = os.environ.get("GITHUB_TOKEN", "")
     if token:
-        req.add_header("Authorization", "Bearer " + token)
+        req.add_header("Authorization", "token " + token)
     with urllib.request.urlopen(req) as resp:
         body = resp.read().decode("utf-8")
         content_type = resp.headers.get("Content-Type", "")
@@ -388,7 +388,8 @@ def parse_aliases(raw: str) -> list[str]:
 def parse_curriculum(markdown: str) -> list[dict[str, Any]]:
     sections: list[dict[str, Any]] = []
     current: dict[str, Any] | None = None
-    # Match either an em dash (upstream style) or hyphen-minus in copied markdown.
+    # Upstream uses an em dash; allow hyphen-minus too so copied curriculum
+    # markdown can still be parsed during local/manual sync runs.
     heading_re = re.compile(r"^##\s+Section\s+(\d+)\s+[—-]\s+(.+)$")
 
     for line in markdown.splitlines():
@@ -460,6 +461,7 @@ def fetch_concepts(curriculum: list[dict[str, Any]]) -> dict[str, dict[str, Any]
 
 
 def quiz_fingerprint(quiz: list[dict[str, Any]] | None) -> str | None:
+    """Return a stable version seed for deterministic client-side quiz shuffling."""
     if quiz is None:
         return None
     digest = hashlib.sha256(json.dumps(quiz, sort_keys=True).encode("utf-8")).hexdigest()
